@@ -1,3 +1,0 @@
-/home/j/test/GTK_Graphing_App/build/CMakeFiles/test_gtk.dir
-/home/j/test/GTK_Graphing_App/build/CMakeFiles/edit_cache.dir
-/home/j/test/GTK_Graphing_App/build/CMakeFiles/rebuild_cache.dir
