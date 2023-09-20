@@ -1,5 +1,5 @@
-#ifndef HEADER_H_NAME
-#define HEADER_H_NAME
+#ifndef PARSEINTERFACE_H_NAME
+#define PARSEINTERFACE_H_NAME
 
 #include <iostream>
 #include <matheval.h>
