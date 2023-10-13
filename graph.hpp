@@ -28,8 +28,7 @@ namespace Graph
         int zoom;
     };
 
-    static void
-    trigger_draw(GtkWidget *widget, gpointer data)
+    static void trigger_draw(GtkWidget *widget, gpointer data)
     {
         Graph_View *graph = (Graph_View *)data;
         gtk_widget_queue_draw(graph->drawing_area);
@@ -140,8 +139,7 @@ namespace Graph
         return points;
     }
 
-    static void
-    draw_function(GtkDrawingArea *area,
+    static void draw_function(GtkDrawingArea *area,
         cairo_t *cr,
         int width,
         int height,

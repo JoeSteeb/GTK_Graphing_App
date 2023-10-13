@@ -11,7 +11,7 @@ class equation
     public:
         equation(char * buffer)
         {
-            function = evaluator_create (buffer);
+            function = evaluator_create(buffer);
         }
         ~equation()
         {

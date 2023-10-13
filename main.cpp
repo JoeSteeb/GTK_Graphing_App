@@ -40,6 +40,7 @@ activate(GtkApplication *app,
 
   ui::add_equation(equation_box_container, graph);
   ui::add_equation(equation_box_container, graph);
+  ui::add_equation(equation_box_container, graph);
   gtk_box_append(GTK_BOX(equation_graph_box), equation_box_container);
   gtk_box_append(GTK_BOX(equation_graph_box), frame);
   gtk_box_append(GTK_BOX(superBox), equation_graph_box);
