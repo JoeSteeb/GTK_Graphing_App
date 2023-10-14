@@ -4,15 +4,26 @@
 #include "graph.hpp"
 #include "./UI/equation_graph.hpp"
 
-
-//TODO: Free this at some point lol
+// TODO: Free this at some point lol
 Graph::Graph_View *graph = new Graph::Graph_View;
-int initial_width=900;
-int initial_height=800;
+int initial_width = 900;
+int initial_height = 800;
 
 // determines the fraction of the window occupide by graph.
 float graph_vertical_fill = 1;
 float graph_horizontal_fill = 0.65;
+
+struct GraphAndEquation
+{
+  Graph::Graph_View *graph;
+  GtkWidget *equation_box;
+};
+
+void trigger_add(GtkWidget *widget, gpointer data)
+{
+  GraphAndEquation *graphAndEquation = reinterpret_cast<GraphAndEquation *>(data);
+  ui::add_equation(graphAndEquation->equation_box, graphAndEquation->graph);
+}
 
 static void
 activate(GtkApplication *app,
@@ -21,47 +32,57 @@ activate(GtkApplication *app,
   // initializes static widgets.
   GtkWidget *window = gtk_application_window_new(app);
   GtkWidget *frame = gtk_frame_new(NULL);
-  GtkWidget *superBox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);;
+  GtkWidget *superBox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+  ;
   GtkWidget *equation_graph_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
   GtkWidget *equation_box_container;
-  GtkWidget *add_equation = gtk_button_new_with_label("graph");;
+  GtkWidget *equation_control_container;
+  GtkWidget *add_equation_button = gtk_button_new_with_label("Add equation");
+  ;
 
   cairo_t *cr;
 
-  // equation_graph_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+  // box to keep equation entries together.
   equation_box_container = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+  // box that for equations that contains add button.
+  equation_control_container = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 
   gtk_window_set_title(GTK_WINDOW(window), "Window");
   gtk_window_set_default_size(GTK_WINDOW(window), initial_width, initial_height);
 
-  gtk_widget_set_size_request(graph->drawing_area, (initial_width*graph_horizontal_fill), initial_height);
+  gtk_widget_set_size_request(graph->drawing_area, (initial_width * graph_horizontal_fill), initial_height);
   gtk_frame_set_child(GTK_FRAME(frame), graph->drawing_area);
   gtk_window_set_child(GTK_WINDOW(window), superBox);
 
   ui::add_equation(equation_box_container, graph);
   ui::add_equation(equation_box_container, graph);
   ui::add_equation(equation_box_container, graph);
-  gtk_box_append(GTK_BOX(equation_graph_box), equation_box_container);
+
+  gtk_box_append(GTK_BOX(equation_control_container), equation_box_container);
+  gtk_box_append(GTK_BOX(equation_graph_box), equation_control_container);
   gtk_box_append(GTK_BOX(equation_graph_box), frame);
   gtk_box_append(GTK_BOX(superBox), equation_graph_box);
 
-  
+  ui::add_to_box(equation_control_container, add_equation_button);
+  GraphAndEquation *graphAndEquation = new GraphAndEquation;
+  graphAndEquation->graph = graph;
+  graphAndEquation->equation_box = equation_box_container;
+  g_signal_connect(add_equation_button, "clicked", G_CALLBACK(trigger_add), (void *)graphAndEquation);
+
   gtk_widget_set_hexpand_set(equation_box_container, true);
   gtk_widget_set_hexpand(equation_box_container, false);
-
   gtk_widget_set_hexpand_set(frame, true);
   gtk_widget_set_hexpand(frame, true);
-
 
   gtk_window_present(GTK_WINDOW(window));
 }
 
 int main(int argc,
          char **argv)
-{ 
-  std::cout << (initial_width*graph_horizontal_fill)/2;
-  graph->transform[0] = (initial_width*graph_horizontal_fill)/2; 
-  graph->transform[1] = (initial_height/2);
+{
+  std::cout << (initial_width * graph_horizontal_fill) / 2;
+  graph->transform[0] = (initial_width * graph_horizontal_fill) / 2;
+  graph->transform[1] = (initial_height / 2);
   Graph::Build_Graph(graph);
   GtkApplication *app;
   int status;

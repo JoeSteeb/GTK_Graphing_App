@@ -17,33 +17,30 @@ namespace ui
     };
 
     void add_to_box(GtkWidget *container, GtkWidget *widget)
-    {        
+    {
         gtk_box_append(GTK_BOX(container), widget);
-    }    
+    }
 
     static void trigger_delete(GtkWidget *widget, gpointer data)
     {
-        graphAndEquation* g = reinterpret_cast<graphAndEquation*>(data);
+        graphAndEquation *g = reinterpret_cast<graphAndEquation *>(data);
 
         std::cout << "\nAfter pass: " << g;
-        
+
         // Remove the equation box from its parent container
         gtk_widget_unparent(g->equation_box);
         // Find the equation_box in the vector and remove it
-        std::erase_if(g->graph->equations, [g](GtkWidget *equation) { 
+        std::erase_if(g->graph->equations, [g](GtkWidget *equation)
+                      { 
             if (equation == g->user_input){
                 std::cout << "found equation";
             }else{
                 std::cout << "equation not found";
             }
             std::cout << "\n";
-            return equation == g->user_input; 
-        });
+            return equation == g->user_input; });
         delete g;
-        
     }
-
-
 
     void add_equation(GtkWidget *container, Graph::Graph_View *graph)
     {
